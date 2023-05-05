@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" class="scroll-smooth">
+<html lang="en" class="bg-white scroll-smooth">
   <head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -292,26 +292,35 @@
           </div>
         </div>
 
-        <form action="">
+        <form name="order-form" action="">
           <div class="w-full px-4 mb-8">
-            
+            <div class="alert alert-success shadow-lg mb-8 my-alert hidden">
+              <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current flex-shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                <span>Your purchase has been sent!</span>
+              </div>
+            </div>
             <div class="w-full px-4 mb-8">
               <label for="name" class="text-base text-teal-400 font-bold">Name</label>
-              <input type="text" id="name" class="w-full bg-white text-slate-600 p-3 rounded-md focus:ring-primary focus:ring-1 focus:border-slate-500">
+              <input type="text" id="name" class="w-full bg-white text-slate-600 p-3 rounded-md focus:ring-primary focus:ring-1 focus:border-slate-500" name="Name">
             </div>
             <div class="w-full px-4 mb-8">
               <label for="email" class="text-base text-teal-400 font-bold">Email</label>
-              <input type="email" id="email" class="w-full bg-white text-slate-600 p-3 rounded-md focus:ring-primary focus:ring-1 focus:border-slate-500">
+              <input type="email" id="email" class="w-full bg-white text-slate-600 p-3 rounded-md focus:ring-primary focus:ring-1 focus:border-slate-500" name="Email">
             </div>
             <div class="w-full px-4 mb-8">
               <label for="message" class="text-base text-teal-400 font-bold">Orders</label>
-              <textarea type="email" id="email" class="w-full bg-white text-slate-600 p-3 rounded-md focus:ring-primary focus:ring-1 focus:border-slate-500 h-32"></textarea>
+              <textarea type="email" id="email" class="w-full bg-white text-slate-600 p-3 rounded-md focus:ring-primary focus:ring-1 focus:border-slate-500 h-32" name="Order"></textarea>
             </div>
-            <div class="w-full border-yellow-200">
-              <button class="text-base font-semibold text-white bg-teal-500 py-3 px-8 rounded-full w-full hover:opacity-80 hover:shadow-lg transition duration-500">Send</button>
+            <!-- <input type="file" class="file-input file-input-bordered file-input-accent w-full max-w-xs mb-4" /> -->
+            <div class="">
+              <!-- <button class="text-base font-semibold text-white bg-teal-500 py-3 px-8 rounded-full w-full hover:opacity-80 hover:shadow-lg transition duration-500" type="submit">Send</button> -->
+              <button class="btn btn-active btn-accent btn-kirim" type="submit">Send</button>
+              <button class="btn btn-square loading btn-loading hidden"></button>
             </div>
-            
+          
           </div>
+          
           </form>
       </div>
     </section>
@@ -337,5 +346,29 @@
     </footer>
     
     <script src="../dist/js/script.js"></script>
+    <script>
+      const scriptURL = 'https://script.google.com/macros/s/AKfycbzmefuPKpFHEW6Lu6MPXIrA0Dptys2z-F_65L7bI9v9z4igMtb9NIRar1BOYPJmsvRGFw/exec'
+      const form = document.forms['order-form']
+      const btnKirim = document.querySelector('.btn-kirim')
+      const btnLoading = document.querySelector('.btn-loading')
+      const myAlert = document.querySelector('.my-alert')
+    
+      form.addEventListener('submit', e => {
+        e.preventDefault()
+
+        btnLoading.classList.toggle('hidden')
+        btnKirim.classList.toggle('hidden')
+
+        fetch(scriptURL, { method: 'POST', body: new FormData(form)})
+          .then(response => {
+            btnLoading.classList.toggle('hidden')
+            btnKirim.classList.toggle('hidden')
+            myAlert.classList.toggle('hidden')
+            form.reset()
+            console.log('Success!', response)
+          })
+          .catch(error => console.error('Error!', error.message))
+      })
+    </script>
   </body>
 </html>
